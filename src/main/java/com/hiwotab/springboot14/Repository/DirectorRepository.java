@@ -5,5 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface DirectorRepository extends CrudRepository<Director,Long >{
     Iterable<Director> findAllByFname(String partialString);
-    Iterable<Director> findAllById(long  partialString);
+    Director findFirstByFnameContains(String partialString);
+
+
 }
