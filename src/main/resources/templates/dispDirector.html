@@ -69,8 +69,7 @@
 
             <div class="form-group">
                 <div class="col-md-4">
-                    <p><a href="addMovie"><strong>Enter Movie information</strong></a></p>
-
+                    <a th:href="@{/addMovie/{id}(id=${newDirector.id})}"><strong>Enter Movie Information</strong></a>
                 </div>
             </div>
         </form>

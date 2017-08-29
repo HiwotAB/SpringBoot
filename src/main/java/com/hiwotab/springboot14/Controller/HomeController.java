@@ -24,12 +24,15 @@ public class HomeController {
     @Autowired
     MoiveRepository moiveRepository;
 
-    //    @RequestMapping("/")
+//        @RequestMapping("/")
 //    public String index(Model model) {
 //        //First lets create a director
 //        Director director = new Director();
-//        director.setName("Stephen Bullock");
+//        director.setFname("Stephen");
+//        director.setLname("Bullock");
 //        director.setGenre("Sci Fi");
+//
+//
 //
 //        //Now lets create a movie
 //        Movie movie = new Movie();
@@ -67,32 +70,23 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/addMovie")
-    public String addMoiveInfo(Model model) {
-        model.addAttribute("newMovie", new Movie());
+    @GetMapping("/addMovie/{id}")
+    public String addMoiveInfo( @PathVariable("id") long id,Model model) {
+
+        Movie movie=new Movie();
+        movie.setDirector(directorRepository.findOne(id));
+        model.addAttribute("newMovie", movie);
         return "addMovie";
     }
 
     @PostMapping("/addMovie")
-    public String addMoiveInfo(@Valid @ModelAttribute("newMovie") Movie movie,  BindingResult result,Model model) {
+    public String addMoiveInfos(@Valid @ModelAttribute("newMovie") Movie movie, BindingResult result) {
         if (result.hasErrors()) {
             return "addMovie";
         }
-//        Director director = new Director();
-//        director.getId();
-//        Set<Movie> movies = new HashSet<Movie>();
-//        movie.setId(movie.getId());
-//        movies.add(movie);
-//        director.setMovies(movies);
-//        movie.setDirector(director);
-//        director.getMovies().add(movie);
-//        directorRepository.save(director);
-//        return "dispMovie";
-        Director nameContains = directorRepository.findFirstByFnameContains(movie.getDirector().getFname());
-
-        movie.setDirector(nameContains);
         moiveRepository.save(movie);
-        return "dispMovie";
+       return "dispMovie";
+
     }
 
     @GetMapping("/addDirector")
@@ -102,17 +96,12 @@ public class HomeController {
     }
 
     @PostMapping("/addDirector")
-    public String addDirectorInfo(@Valid @ModelAttribute("newDirector") Director director, BindingResult result) {
+    public String addDirectorInfo(@Valid @ModelAttribute("newDirector") Director director,BindingResult result) {
         if (result.hasErrors()) {
             return "addDirector";
         }
 
         directorRepository.save(director);
-        Iterable<Movie> movieIterable = moiveRepository.findAllByDirectorFormInputIs(director.getFname());
-        for (Movie movie : movieIterable) {
-            movie.setDirector(director);
-        }
-
         return "dispDirector";
     }
 
@@ -124,7 +113,7 @@ public class HomeController {
 
     @RequestMapping("/Movupdate/{id}")
     public String updateMov(@PathVariable("id") long id, Model model) {
-        model.addAttribute("newDirector", moiveRepository.findOne(id));
+        model.addAttribute("newMovie", moiveRepository.findOne(id));
         return "addMovie";
     }
 
@@ -148,14 +137,16 @@ public class HomeController {
 
     @RequestMapping("/Dirdetail/{id}")
     public String showDirector(@PathVariable("id") long id, Model model) {
-        model.addAttribute("director", directorRepository.findOne(id));
-        return "dispDirector";
+        Director directorD=directorRepository.findOne(id);
+        model.addAttribute("directorD", directorD);
+        model.addAttribute("listMovies",moiveRepository.findByDirector(directorD));
+        return "dispDirectorDetail";
     }
 
     @RequestMapping("/Movdetail/{id}")
     public String showMovie(@PathVariable("id") long id, Model model) {
-        model.addAttribute("movie", moiveRepository.findOne(id));
-        return "dispMovie";
+        model.addAttribute("listMovies", moiveRepository.findOne(id));
+        return "dispMovieDetail";
     }
 
     @GetMapping("/searchDirector")

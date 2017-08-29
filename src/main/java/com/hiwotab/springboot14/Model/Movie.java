@@ -1,16 +1,28 @@
 package com.hiwotab.springboot14.Model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+
 @Entity
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @NotEmpty
+    @Size(min=2,max = 100)
     private String title;
+
     private  long year;
+    @NotEmpty
+    @Size(min=2,max = 500)
     private String description;
+
     @ManyToOne(fetch = FetchType.EAGER)
+
     @JoinColumn(name="director_id")
+
     private Director director;
 
     public long getId() {

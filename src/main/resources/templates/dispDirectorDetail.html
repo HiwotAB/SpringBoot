@@ -40,59 +40,55 @@
 
 <section class="hero">
     <div class="container text-center">
-        <div class="container">
-            <!--<div class="transbox" opacity="0.5">-->
-            <form class="well form-horizontal" th:action="@{/addMovie}" th:object="${newMovie}" method="post">
+            <div class="form-group">
 
-                <fieldset>
+                <div class="col-sm-10">
 
-                    <!-- Form Name -->
-                    <legend align="Center">Please Enter Moive Information</legend>
-                    <input type=hidden th:field="*{director.id}" />
+                    <p th:text="${directorD.fname}" />
+                </div>
+            </div>
 
-                    <!-- Text input-->
-                    <div class="form-group">
+            <div class="form-group">
 
-                        <div class="col-sm-10">
-                            <div  th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="well alert alert-danger" role="alert"></div>
-                            <input  th:field="*{title}"  name="title" placeholder="Enter Title" class="form-control"  type="text">
+                <div class="col-sm-10">
 
-                        </div>
-                    </div>
+                    <p th:text="${directorD.lname}" />
+                </div>
+            </div>
 
-                    <!-- Text input-->
-                    <div class="form-group">
+            <div class="form-group">
 
-                        <div class="col-sm-10">
-                            <div  th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="well alert alert-danger" role="alert"></div>
-                            <input  th:field="*{year}" name="year" placeholder="Enter Year" class="form-control"  type="text">
+                <div class="col-sm-10">
 
-                        </div>
-                    </div>
-                    <!-- Text input-->
-                    <div class="form-group">
+                    <p th:text="${directorD.genre}" />
 
-                        <div class="col-sm-10">
-                            <div  th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="well alert alert-danger" role="alert"></div>
-                            <input  th:field="*{description}" name="description" placeholder="Enter Description" class="form-control"  type="text">
-
-                        </div>
-                    </div>
-
-
-                    <!-- Button -->
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                           <p><button type="submit" class="btn btn-success" >Submit</button>
-                               <button type="reset" class="btn btn-warning" >Reset</span></button></p>
-                        </div>
-                    </div>
-
-                </fieldset>
-            </form>
+                </div>
+            </div>
+            <caption> <h4><b>Movie List Directed By: </b></h4></caption>
+            <table class="table table-striped" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Year</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody align="left">
+                <tr th:each="mov: ${listMovies}">
+                    <td th:text="*{mov.title}"></td>
+                    <td th:text="*{mov.year}"></td>
+                    <td th:text="*{mov.description}"></td>
+                    <td>
+                        <a th:href="@{/Movupdate/{id}(id=${mov.id})}">Update</a>
+                        <!--<a th:href="@{/delete/{id}(id=${dir.id})}">Delete</a>&ndash;&gt;-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
 </section>
+<!-- /Hero -->
 
 <!-- Header -->
 <header id="header">
